@@ -55,6 +55,9 @@ app.whenReady().then(async() => {
   ipcMain.on('refresh-verify-code', () => {
     loginManager.getVerifyCode()
   })
+  ipcMain.on('login', () => {
+    console.log("login click")
+  })
   
   await loginManager.getVerifyCode()
   createWindow()
