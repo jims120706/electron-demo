@@ -7,6 +7,9 @@ import { decrement, increment } from './store/reducers/counter'
 function App(): JSX.Element {
   const count = useSelector((state) => state.counter.value)
   const dispatch = useDispatch()
+
+  console.log("window", window)
+
   return (
     <Router>
       <div>

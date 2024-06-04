@@ -1,8 +1,12 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import * as Urls from './config'
+import Login from '../main/utils/login'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  mark: '123456'
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -11,6 +15,8 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('Urls', Urls)
+    contextBridge.exposeInMainWorld('Login', Login)
   } catch (error) {
     console.error(error)
   }
@@ -19,4 +25,6 @@ if (process.contextIsolated) {
   window.electron = electronAPI
   // @ts-ignore (define in dts)
   window.api = api
+  window.Urls = Urls
+  window.Login = Login
 }
