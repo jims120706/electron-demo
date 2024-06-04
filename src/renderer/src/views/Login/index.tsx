@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
+import verifyCodeImg from '@renderer/assets/captcha.png'
 
 function Login(): JSX.Element {
-  const [verifyCodeVisible, setVerifyCodeVisible] = useState(false)
+  const [verifyCode, setVerifyCode] = useState('')
 
   useEffect(() => {
-    setVerifyCodeVisible(true)
+    import('@renderer/assets/captcha.png').then((url) => {
+      setVerifyCode(url)
+    })
   })
 
   return (
@@ -17,7 +20,8 @@ function Login(): JSX.Element {
         密码：
         <input />
       </div>
-      <div>验证码：{verifyCodeVisible && <img src="../../assets/captcha.png" />}</div>
+      <div>验证码：{verifyCode && <img src={verifyCodeImg} />}</div>
+      <button>登录</button>
     </div>
   )
 }

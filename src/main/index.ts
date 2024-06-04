@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, ipcRenderer } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -20,8 +20,7 @@ async function createWindow(): void {
     }
   })
 
-  mainWindow.on('ready-to-show', () => {
-    loginManager.getVerifyCode()
+  mainWindow.on('ready-to-show', async() => {
     mainWindow.show()
   })
 
@@ -43,7 +42,7 @@ async function createWindow(): void {
   mainWindow.webContents.openDevTools()
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async() => {
   
   electronApp.setAppUserModelId('com.electron')
   
@@ -53,7 +52,11 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
-
+  ipcMain.on('refresh-verify-code', () => {
+    loginManager.getVerifyCode()
+  })
+  
+  await loginManager.getVerifyCode()
   createWindow()
 
   app.on('activate', function () {
