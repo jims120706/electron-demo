@@ -3,12 +3,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 import * as DomainConfig from '@/main/config/index'
 import Login from '@/main/util/login'
 
-// Custom APIs for renderer
 const api = {}
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
 console.log("contextIsolated", process.contextIsolated)
 
 if (process.contextIsolated) {
@@ -27,5 +23,5 @@ if (process.contextIsolated) {
   // @ts-ignore (define in dts)
   window.DomainConfig = DomainConfig
   // @ts-ignore (define in dts)
-  window.Login = Login
+  window.loginManager = Login
 }

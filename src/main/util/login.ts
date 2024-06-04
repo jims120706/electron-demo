@@ -36,7 +36,8 @@ export default class Login {
     return new Promise(async (resolve) => {
       await this.getCookie()
       const captchaUrl = `${BaseUrl}${verifyCodePath}?v=${new Date().getTime()}`
-      const captchaPath = path.resolve(__dirname, '../../renderer/src/assets/captcha.png')
+      const captchaPath = path.resolve(__dirname, '../../src/renderer/src/assets/captcha.png')
+      console.log("captchaPath", captchaPath)
       const headers = this.headerIns.getRequestHeader()
 
       const res = await axios.request({
@@ -45,17 +46,19 @@ export default class Login {
         responseType: 'stream',
         headers
       })
-
       // 保存图片到本地
       const writer = fs.createWriteStream(captchaPath)
       res.data.pipe(writer)
       let error = null as unknown
       writer.on('error', (err) => {
+        console.log("err", err)
         error = err
         writer.close()
       })
       writer.on('close', async () => {
+        console.log("close")
         if (!error) {
+          this.headerIns.appendHeaderCookie(res.headers['set-cookie'])
           resolve()
         }
       })

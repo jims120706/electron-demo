@@ -4,6 +4,7 @@ function Login(): JSX.Element {
   const [verifyCodeVisible, setVerifyCodeVisible] = useState(false)
 
   useEffect(() => {
+    setVerifyCodeVisible(true)
   })
 
   return (
@@ -16,7 +17,7 @@ function Login(): JSX.Element {
         密码：
         <input />
       </div>
-      <div>验证码：{verifyCodeVisible && <img src="@/renderer/assets/captcha.png" />}</div>
+      <div>验证码：{verifyCodeVisible && <img src="../../assets/captcha.png" />}</div>
     </div>
   )
 }
