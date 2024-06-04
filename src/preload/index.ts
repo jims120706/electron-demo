@@ -9,12 +9,13 @@ const api = {}
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
+console.log("contextIsolated", process.contextIsolated)
+
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
     contextBridge.exposeInMainWorld('DomainConfig', DomainConfig)
-    contextBridge.exposeInMainWorld('loginManager', new Login())
   } catch (error) {
     console.error(error)
   }
@@ -26,5 +27,5 @@ if (process.contextIsolated) {
   // @ts-ignore (define in dts)
   window.DomainConfig = DomainConfig
   // @ts-ignore (define in dts)
-  window.loginManager = new Login()
+  window.Login = Login
 }

@@ -1,7 +1,9 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, ipcRenderer } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import events from '@/main/config/event'
+import Login from '@/main/util/login'
 
 function createWindow(): void {
   // Create the browser window.
@@ -12,6 +14,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
+      contextIsolation: false,
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
@@ -33,6 +36,10 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+
+  // 初始话登录器
+  mainWindow.webContents.send(events.INIT_LOGIN_MANAGER, JSON.stringify(Login.getInstance()));
 
   mainWindow.webContents.openDevTools()
 }
@@ -71,6 +78,3 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.

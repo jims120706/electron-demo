@@ -4,7 +4,6 @@ function Login(): JSX.Element {
   const [verifyCodeVisible, setVerifyCodeVisible] = useState(false)
 
   useEffect(() => {
-    window.loginManager.getVerifyCode()
   })
 
   return (

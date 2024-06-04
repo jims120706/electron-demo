@@ -8,6 +8,15 @@ export default class Login {
   headerIns: Record<string, any>
   loginData: Record<string, any>
 
+  static instance: Login
+
+  static getInstance(): Login {
+    if(!Login.instance) {
+      Login.instance = new Login()
+    }
+    return Login.instance
+  }
+
   constructor() {
     this.headerIns = RequestHeader.getIns()
     this.loginData = {}
