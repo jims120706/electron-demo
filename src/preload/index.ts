@@ -4,14 +4,14 @@ import * as DomainConfig from '@/main/config/index'
 import Login from '@/main/util/login'
 
 const api = {}
-
-console.log("contextIsolated", process.contextIsolated)
+const loginManager = Login.getInstance()
 
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
     contextBridge.exposeInMainWorld('DomainConfig', DomainConfig)
+    contextBridge.exposeInMainWorld('loginManager', loginManager)
   } catch (error) {
     console.error(error)
   }
@@ -23,5 +23,5 @@ if (process.contextIsolated) {
   // @ts-ignore (define in dts)
   window.DomainConfig = DomainConfig
   // @ts-ignore (define in dts)
-  window.loginManager = Login
+  window.loginManager = loginManager
 }
