@@ -9,7 +9,8 @@ function Login(): JSX.Element {
   useEffect(() => {
     getCodeUrl()
     window.electron.ipcRenderer.on(Events.HANDLE_LOGIN_DATA, (event, loginData) => {
-      console.log("loginData in renderer", loginData)
+      console.log('loginData in renderer', loginData)
+      setLoginData(loginData)
     })
   })
 
@@ -32,26 +33,31 @@ function Login(): JSX.Element {
   }
 
   function setLoginData(loginMessage) {
-    // DataManager.USER_NAME = loginMessage.UserName
-    // DataManager.CODE = loginMessage.Code
-    // DataManager.apiUserToken = loginMessage.apiUserToken
-    // DataManager.ccData || (DataManager.ccData = btoa(JSON.stringify(loginMessage)))
-    // Connector.socket_host_arr = []
-    // Connector.socket_port_arr = []
-    // Connector.socket_host_index = 0
-    // const wsList = loginMessage.BailuLineList || loginMessage.LineList;
-    // if (wsList && wsList.length > 0) {
-    //     var i = 0, len = wsList.length;
-    //     for (Connector.socket_obj_arr || (Connector.socket_obj_arr = []); len > i; ++i) {
-    //         var wsItem = wsList[i];
-    //         Connector.socket_obj_arr.push({
-    //             host: wsItem.IP,
-    //             port: wsItem.Port
-    //         })
-    //     }
-    // }
-    // pingHostAndConnect(Connector)
-    // MessageHandler.getIns().connect()
+    window.DataManager.USER_NAME = loginMessage.UserName
+    window.DataManager.CODE = loginMessage.Code
+    window.DataManager.apiUserToken = loginMessage.apiUserToken
+    window.DataManager.ccData || (window.DataManager.ccData = btoa(JSON.stringify(loginMessage)))
+    window.Connector.socket_host_arr = []
+    window.Connector.socket_port_arr = []
+    window.Connector.socket_host_index = 0
+    const wsList = loginMessage.BailuLineList || loginMessage.LineList
+    if (wsList && wsList.length > 0) {
+      var i = 0,
+        len = wsList.length
+      for (
+        window.Connector.socket_obj_arr || (window.Connector.socket_obj_arr = []);
+        len > i;
+        ++i
+      ) {
+        var wsItem = wsList[i]
+        window.Connector.socket_obj_arr.push({
+          host: wsItem.IP,
+          port: wsItem.Port
+        })
+      }
+    }
+    window.Connector.pingHost()
+    window.MessageHandler.getIns().connect()
   }
 
   return (

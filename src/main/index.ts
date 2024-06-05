@@ -17,6 +17,7 @@ async function createWindow(): void {
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
+      webSecurity: false, // 禁用同源策略  
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
     }
