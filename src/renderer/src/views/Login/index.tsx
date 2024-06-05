@@ -21,53 +21,11 @@ function Login(): JSX.Element {
   }
 
   async function login(): void {
-    window.electron.ipcRenderer.send('login')
     if (!verifyCodeNumber) {
       console.error('必须输入验证码')
       return
     }
-
-    const loginManager = window.loginManager
-    const DomainConfig = window.DomainConfig
-
-    const { BaseUrl, LoginPath } = DomainConfig
-
-    const headers = loginManager.headerIns.header
-
-    const params = {
-      username: 'YTYT1122',
-      host: '192.168.3.53',
-      action: 'loginMobile',
-      secret: 'DZ',
-      type: '0',
-      random: verifyCodeNumber,
-      lang: 'zh_CN',
-      password: 'A2F590D1509F20F010C5A4597DB2E670',
-      agent: 'RMB1',
-      clientType: '1',
-      phoneType: 'Apple iPhone'
-    }
-
-    // console.log("登录头", headers)
-    // console.log("登录参数", params)
-
-    const url = `${BaseUrl}${LoginPath}`
-
-    try {
-      const res = await axios({
-        methods: 'get',
-        url,
-        headers,
-        params
-      })
-      const data = res.data.value
-      const loginMessage = JSON.parse(data)
-      if (loginMessage) {
-        console.log('login message：', loginMessage)
-      }
-    } catch (e) {
-      console.error('Error:', e)
-    }
+    window.electron.ipcRenderer.send('login', verifyCodeNumber)
   }
 
   return (

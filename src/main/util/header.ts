@@ -50,6 +50,7 @@ export default class RequestHeader {
   appendHeaderCookie(rawCookies): void {
     const cookies = this.parseCookies(rawCookies)
     this.header['Cookie'] += this.serializeCookies(cookies)
+    // console.log("cookies", this.header['Cookie'])
   }
 
   getReqCookieHeader(): typeof this.initHeader {

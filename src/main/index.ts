@@ -52,11 +52,13 @@ app.whenReady().then(async() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+  // 点击刷新验证码
   ipcMain.on('refresh-verify-code', () => {
     loginManager.getVerifyCode()
   })
-  ipcMain.on('login', () => {
-    console.log("login click")
+  // 点击登录
+  ipcMain.on('login', (event, verifyCode) => {
+    loginManager.login(verifyCode)
   })
   
   await loginManager.getVerifyCode()
