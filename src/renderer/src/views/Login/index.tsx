@@ -8,6 +8,9 @@ function Login(): JSX.Element {
 
   useEffect(() => {
     getCodeUrl()
+    window.electron.ipcRenderer.on(Events.HANDLE_LOGIN_DATA, (event, loginData) => {
+      console.log("loginData in renderer", loginData)
+    })
   })
 
   function getCodeUrl(): void {
@@ -26,6 +29,29 @@ function Login(): JSX.Element {
       return
     }
     window.electron.ipcRenderer.send(Events.TRIGGER_LOGIN, verifyCodeNumber)
+  }
+
+  function setLoginData(loginMessage) {
+    // DataManager.USER_NAME = loginMessage.UserName
+    // DataManager.CODE = loginMessage.Code
+    // DataManager.apiUserToken = loginMessage.apiUserToken
+    // DataManager.ccData || (DataManager.ccData = btoa(JSON.stringify(loginMessage)))
+    // Connector.socket_host_arr = []
+    // Connector.socket_port_arr = []
+    // Connector.socket_host_index = 0
+    // const wsList = loginMessage.BailuLineList || loginMessage.LineList;
+    // if (wsList && wsList.length > 0) {
+    //     var i = 0, len = wsList.length;
+    //     for (Connector.socket_obj_arr || (Connector.socket_obj_arr = []); len > i; ++i) {
+    //         var wsItem = wsList[i];
+    //         Connector.socket_obj_arr.push({
+    //             host: wsItem.IP,
+    //             port: wsItem.Port
+    //         })
+    //     }
+    // }
+    // pingHostAndConnect(Connector)
+    // MessageHandler.getIns().connect()
   }
 
   return (

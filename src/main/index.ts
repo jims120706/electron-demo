@@ -7,8 +7,10 @@ import Login from '@/main/util/login'
 
 const loginManager = Login.getInstance()
 
+let mainWindow
+
 async function createWindow(): void {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
@@ -59,7 +61,8 @@ app.whenReady().then(async() => {
   // 点击登录
   ipcMain.on(events.TRIGGER_LOGIN, async(event, verifyCode) => {
     await loginManager.login(verifyCode)
-    console.log(loginManager.getLoginData())
+    // 发送登录数据
+    mainWindow.webContents.send(events.HANDLE_LOGIN_DATA, loginManager.getLoginData())
   })
   
   await loginManager.getVerifyCode()
