@@ -102,7 +102,6 @@ export default class Login {
       const data = res.data.value
       const loginMessage = JSON.parse(data)
       if (loginMessage) {
-        console.log("登录信息", loginMessage)
         this.loginData = loginMessage
       }
     } catch (e) {

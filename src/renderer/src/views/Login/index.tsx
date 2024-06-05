@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import verifyCodeImg from '@renderer/assets/captcha.png'
 
 function Login(): JSX.Element {
   const [hasVerifyCode, setVerifyCode] = useState('')
   const [verifyCodeNumber, setVerifyCodeNumber] = useState('')
+  const Events = window.Events
 
   useEffect(() => {
     getCodeUrl()
@@ -17,7 +17,7 @@ function Login(): JSX.Element {
   }
 
   function refreshCode(): void {
-    window.electron.ipcRenderer.send('refresh-verify-code')
+    window.electron.ipcRenderer.send(Events.REFRESG_VERIFY_CODE)
   }
 
   async function login(): void {
@@ -25,7 +25,7 @@ function Login(): JSX.Element {
       console.error('必须输入验证码')
       return
     }
-    window.electron.ipcRenderer.send('login', verifyCodeNumber)
+    window.electron.ipcRenderer.send(Events.TRIGGER_LOGIN, verifyCodeNumber)
   }
 
   return (

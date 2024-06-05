@@ -2,6 +2,7 @@ import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import * as DomainConfig from '@/main/config/index'
 import Login from '@/main/util/login'
+import Events from '@/main/config/event'
 
 const api = {}
 const loginManager = Login.getInstance()
@@ -12,6 +13,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('api', api)
     contextBridge.exposeInMainWorld('DomainConfig', DomainConfig)
     contextBridge.exposeInMainWorld('loginManager', loginManager)
+    contextBridge.exposeInMainWorld('Events', Events)
   } catch (error) {
     console.error(error)
   }
@@ -24,4 +26,6 @@ if (process.contextIsolated) {
   window.DomainConfig = DomainConfig
   // @ts-ignore (define in dts)
   window.loginManager = loginManager
+  // @ts-ignore (define in dts)
+  window.Events = Events
 }
